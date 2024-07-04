@@ -1,0 +1,156 @@
+﻿@model List<SiddharthJasapara_550.Model.Model.OrderDetailsModel>
+
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    float total = 0;
+}
+
+<link href="~/Content/toastr.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="~/Scripts/toastr.js"></script>
+
+<h2>My Orders</h2>
+
+<form method="post">
+    <div class="table-responsive">
+        <table class="table text-nowrap">
+            <thead>
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Available
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count > 0)
+                {
+                    int i = 0;
+                    foreach (var o in Model)
+                    {
+                        <tr>
+                            <input type="hidden" name="orderDetailsModels[@i].id" value="@Model[i].id" />
+                            <input type="hidden" name="orderDetailsModels[@i].orderId" value="@Model[i].orderId" />
+                            <input type="hidden" name="orderDetailsModels[@i].productId" value="@Model[i].productId" />
+
+                            <td>
+                                <input type="hidden" name="orderDetailsModels[@i].productName" value="@Model[i].productName" />
+                                @Model[i].productName
+                            </td>
+                            <td class="productPrice" data-price="@Model[i].price">
+                                <input type="hidden" name="orderDetailsModels[@i].price" value="@Model[i].price" />
+                                @Model[i].price
+                            </td>
+                            <td>
+                                <input type="hidden" name="orderDetailsModels[@i].available" value="@Model[i].available" />
+                                @Model[i].available
+                            </td>
+                            <td>
+                                <input type="hidden" name="orderDetailsModels[@i].type" value="@Model[i].type" />
+                                @Model[i].type
+                            </td>
+                            <td>
+                                <input class="quantityToOrder form-control col-lg-3" name="orderDetailsModels[@i].quantity" type="number" min="1" value="1" max="@Model[i].available" data-price="@Model[i].price" data-max="@Model[i].available" />
+                            </td>
+                            <td>
+                                <a class="btn">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        total += Model[i].price;
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+        <h4>Total Amount: ₹<span id="totalAmount">@total</span></h4>
+        <button class="btn btn-primary mt-2" type="submit">Place Order</button>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+
+
+        function calculateTotal() {
+            var total = 0;
+            $('.quantityToOrder').each(function () {
+                var price = $(this).data('price');
+                var quantity = $(this).val();
+                total += price * quantity;
+            });
+            $('#totalAmount').text(total.toFixed(2));
+        }
+
+        $('.quantityToOrder').on('change keyup input', function () {
+            var quantity = $(this).val();
+            var max = $(this).data('max');
+            if (quantity > max) {
+                alert('You cannot order more quantities than available');
+                $(this).val(1)
+            }
+            calculateTotal();
+        });
+
+        // Initial calculation
+        calculateTotal();
+    });
+</script>
+
+@if (ViewBag.noproduct != null)
+{
+    <script>
+        toastr.error("@ViewBag.noproduct")
+    </script>
+}
+
+@if (ViewBag.ordered != null)
+{
+    <script>
+        toastr.success("@ViewBag.ordered")
+    </script>
+}
+
+@if (ViewBag.neworder != null)
+{
+    <script>
+        toastr.success("@ViewBag.neworder")
+    </script>
+}
+
+@if (ViewBag.already != null)
+{
+    <script>
+        toastr.warning("@ViewBag.already")
+    </script>
+}
+
+@if (ViewBag.error != null)
+{
+    <script>
+        toastr.error("@ViewBag.error")
+    </script>
+}
+
+@if (ViewBag.unable != null)
+{
+    <script>
+        toastr.error("@ViewBag.unable")
+    </script>
+}
