@@ -2025,6 +2025,7 @@
     <Content Include="Views\Admin\EditProduct.cshtml" />
     <Content Include="Views\Supplier\Order.cshtml" />
     <Content Include="Views\Supplier\OrdersList.cshtml" />
+    <Content Include="Views\Supplier\Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

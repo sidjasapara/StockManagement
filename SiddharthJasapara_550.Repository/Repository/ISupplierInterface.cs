@@ -14,5 +14,6 @@ namespace SiddharthJasapara_550.Repository.Repository
         string PlaceOrder(int id, int userId);
         List<OrderDetailsModel> PendingOrders(int id);
         bool Ordered(int id, List<OrderDetailsModel> orderDetailsModels);
+        List<OrdersModel> GetOrders(int id);
     }
 }

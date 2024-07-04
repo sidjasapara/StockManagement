@@ -48,5 +48,12 @@ namespace SiddharthJasapara_550.Api.Controllers
         {
             return _SupplierServices.Ordered(id, orderDetailsModels);
         }
+
+        [HttpGet]
+        [Route("api/SupplierApi/Orders")]
+        public List<OrdersModel> Orders(int id)
+        {
+            return _SupplierServices.GetOrders(id);
+        }
     }
 }

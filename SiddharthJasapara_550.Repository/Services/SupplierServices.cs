@@ -165,5 +165,34 @@ namespace SiddharthJasapara_550.Repository.Services
                 throw ex;
             }
         }
+
+        public List<OrdersModel> GetOrders(int id)
+        {
+            try
+            {
+                List<OrdersModel> ordersModel = new List<OrdersModel>();
+                if (id > 0)
+                {
+                    List<Orders> orders = DBContext.Orders.Where(o => o.userId == id && o.ordDate != null).ToList();
+                    if (orders.Count > 0)
+                    {
+                        foreach (Orders o in orders)
+                        {
+                            OrdersModel orderModel = new OrdersModel();
+                            orderModel.userId = (int)o.userId;
+                            orderModel.date = (DateTime)o.ordDate;
+                            orderModel.total = o.total;
+
+                            ordersModel.Add(orderModel);
+                        }
+                    }
+                }
+                return ordersModel;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
